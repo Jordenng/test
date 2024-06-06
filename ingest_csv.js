@@ -14,7 +14,7 @@ const db = new sqlite3.Database('./weather.db');
 // });
   
 // Read the CSV file and insert data into the database
-fs.createReadStream('weather_data.csv')
+fs.createReadStream('test.csv')
   .pipe(csv())
   .on('data', (row) => {
     console.log('Row:', row); // Log the row object to see its structure (optional)

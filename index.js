@@ -4,6 +4,19 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const port = 3000;
 
+const VERY_HOT_THRESHOLD = 30;
+const COLD_AND_RAINY_TEMP_THRESHOLD = 10;
+const COLD_AND_RAINY_PRECIP_THRESHOLD = 0.5;
+
+function isConditionMet(condition, row) {
+  const isVeryHot = row.Temperature_Celsius > VERY_HOT_THRESHOLD;
+  const isColdAndRainy = row.Temperature_Celsius < COLD_AND_RAINY_TEMP_THRESHOLD &&
+                         row.Precipitation_Rate_mm_hr > COLD_AND_RAINY_PRECIP_THRESHOLD;
+
+  return condition === 'veryHot' ? isVeryHot : isColdAndRainy;
+}
+
+
 // Connect to the SQLite database
 const db = new sqlite3.Database('./weather.db', (err) => {
   if (err) {
@@ -42,12 +55,20 @@ app.get('/weather/insight', (req, res) => {
     return res.status(400).json({ error: 'Invalid condition' });
   }
 
+  // const query = `
+  //   SELECT Longitude, Latitude, forecast_time, Temperature_Celsius, Precipitation_Rate_mm_hr
+  //   FROM weather
+  //   WHERE (${lon})
+  //   AND (${lat})
+  //   AND (${conditionQuery})`;
+
   const query = `
-    SELECT Longitude, Latitude, forecast_time, Temperature_Celsius, Precipitation_Rate_mm_hr
-    FROM weather
-    WHERE (${lon})
-    AND (${lat})
-    AND (${conditionQuery})`;
+  SELECT Longitude, Latitude, forecast_time, Temperature_Celsius, Precipitation_Rate_mm_hr
+  FROM weather
+  WHERE Longitude = ${lon}
+  AND Latitude = ${lat}`;
+
+;
 
   console.log('Executing query:', query);
 
@@ -63,7 +84,7 @@ app.get('/weather/insight', (req, res) => {
 
     const result = rows.map(row => ({
       forecastTime: row.forecast_time,
-      conditionMet: condition === 'veryHot' ? row.Temperature_Celsius > 30 : row.Temperature_Celsius < 10 && row.Precipitation_Rate_mm_hr > 0.5,
+      conditionMet: isConditionMet(condition, row)
     }));
 
     console.log('Formatted result:', result); // Log the formatted result
