@@ -34,7 +34,6 @@ db.all(`PRAGMA table_info(weather);`, (err, rows) => {
     console.error('Error querying table info:', err.message);
     return;
   }
-  // Print the column names
   console.log('Columns:', rows.map(row => row.name));
 });
 

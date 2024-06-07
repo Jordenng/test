@@ -1,34 +1,25 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../app'); // Adjust the path to your app.js file
-const sqlite3 = require('sqlite3').verbose();
-const { expect } = chai;
+// test for cold condition
+// test for lon is not in db returns empty array
+// test for lat is not in db returns empty array
+// fix tests expect to match reality.
+
+import { expect, assert } from 'chai';
+import chaiHttp from 'chai-http';
+import pkg from './db.js';
+const { db } = pkg;
+import { getWeatherInsight } from './weatherController.js';
 
 chai.use(chaiHttp);
 
 describe('Weather Insight API', () => {
-  let db;
+  let server;
 
   before((done) => {
-    // Connect to the SQLite database
-    db = new sqlite3.Database('./weather.db', (err) => {
-      if (err) {
-        console.error('Error connecting to database:', err.message);
-      } else {
-        console.log('Connected to the database for testing');
-      }
-      done();
-    });
+    server = app.listen(3000, done);
   });
 
   after((done) => {
-    // Close the database connection after tests
-    db.close((err) => {
-      if (err) {
-        console.error('Error closing the database:', err.message);
-      }
-      done();
-    });
+    server.close(done);
   });
 
   describe('GET /weather/insight', () => {
