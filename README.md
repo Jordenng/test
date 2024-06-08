@@ -18,3 +18,6 @@ If the data is large, querying on 'Longitude' and 'Latitude' could take some tim
 
 ## Production
 To make this production-grade, security should be improved (risk of SQL Injection), optimized data queries, documentation for the API, and deployment strategy 
+
+## Assumptions
+CSV files are with undersocre in their parameters, like 'Temperature_Celsius' instead of 'Temperature Celsius' and 'Precipitation_Rate_mm_hr' instead of 'Precipitation Rate mm/hr'
