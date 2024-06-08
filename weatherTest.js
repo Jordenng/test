@@ -30,7 +30,6 @@ describe('getWeatherInsight', () => {
     expect(res.status.calledOnceWith(200)).to.be.true;
     expect(res.json.calledOnce).to.be.true;
     expect(res.json.firstCall.args[0]).to.be.an('array');
-    // Add more assertions as needed
   });
 
   it('should return 400 for missing query parameters', () => {
@@ -41,7 +40,6 @@ describe('getWeatherInsight', () => {
     expect(res.status.calledOnceWith(400)).to.be.true;
     expect(res.json.calledOnce).to.be.true;
     expect(res.json.firstCall.args[0]).to.have.property('error');
-    // Add more assertions as needed
   });
 
   it('should return 400 for invalid condition', () => {
@@ -52,8 +50,6 @@ describe('getWeatherInsight', () => {
     expect(res.status.calledOnceWith(400)).to.be.true;
     expect(res.json.calledOnce).to.be.true;
     expect(res.json.firstCall.args[0]).to.have.property('error');
-    // Add more assertions as needed
   });
-
-  // Add more tests for other conditions and scenarios
+  
 });
