@@ -1,4 +1,4 @@
-## Render URL
+## How to use this service
 https://test-wkzw.onrender.com
 
 ## Example
